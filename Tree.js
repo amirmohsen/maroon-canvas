@@ -1,5 +1,4 @@
-var FS = require("fs"),
-	FS_EXT = require("node-fs"),
+var FS = require("fs-extra"),
 	Path = require("path");
 	jQuery = require("jquery"),
 	jsDom = require("jsdom").jsdom,
@@ -10,7 +9,7 @@ function Tree () {
 	
 	var self = this,
 		publicDir = Path.join(__dirname, "/public"),
-		contentsDir = Path.join(__dirname, "/contents"),
+		contentsDir = Path.join(__dirname, "/data/contents"),
 		templatesDir = Path.join(__dirname, "/templates"),
 		document = jsDom( 
 			read(templatesDir + "/default-template.html"),
@@ -23,7 +22,16 @@ function Tree () {
 		window = document.parentWindow,
 		$ = jQuery(window);
 
+	init();
 	detectChanges(contentsDir);
+
+	function init(){
+		// This must be replaced with a smarter way of cleaning old files
+		var oldContents = FS.readdirSync(publicDir);
+		oldContents.forEach(function(oldContent){
+			FS.removeSync(Path.join(publicDir, oldContent));
+		});
+	}
 
 	function read(path){
 		return FS.readFileSync(path, { encoding: "utf-8" });
@@ -31,7 +39,7 @@ function Tree () {
 
 	function write(readPath, content){
 		var writePath = publicDir + readPath.replace(contentsDir, "");
-		FS_EXT.mkdirSync(Path.dirname(writePath), 0777, true);
+		FS.mkdirsSync(Path.dirname(writePath));
 		FS.writeFileSync(writePath, content, { encoding: "utf-8" });
 	}
 

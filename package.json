@@ -15,7 +15,7 @@
     "change-case": "2.1.5",
     "socket.io": "1.1.0",
     "multer": "0.1.6",
-    "node-fs": "0.1.7",
+    "fs-extra": "0.13.0",
     "js-beautify": "1.5.4",
     "compression": "1.2.2"
   }

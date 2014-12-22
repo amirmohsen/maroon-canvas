@@ -46,7 +46,8 @@ function Server(){
 		app = Express();
 		httpServer = Http.Server(app);
 		// global.io = SocketIo(httpServer);
-		staticApp = Express();
+		publicStaticApp = Express();
+		assetsStaticApp = Express();
 		// Mongoose.connect('mongodb://localhost/vision-clay');
 		// db = Mongoose.connection;
 		// db.on('error', console.error.bind(console, 'connection error:'));
@@ -57,6 +58,7 @@ function Server(){
 	function init(){
 		globalizeUtils();
 		globalizeModules();
+		loadConfig();
 	}
 
 	function globalizeUtils(){
@@ -77,6 +79,7 @@ function Server(){
 				"jquery",
 				"jsdom",
 				"fs",
+				"url",
 				"path",
 				"change-case",
 				"socket.io",
@@ -99,16 +102,23 @@ function Server(){
 		});
 	}
 
+	function loadConfig(){
+		global.Config = JSON.parse(
+			Fs.readFileSync(__ROOT + "/config.json", { encoding: "utf-8" })
+		);
+	}
+
 	function databaseConnected(){
 		// console.log("Connected to database...");
 
-		httpServer.listen(8080);
+		httpServer.listen(Config.port);
 
 		// Compress all responses above 1KB (default value)
 		app.use(Compression());
 
 		// Static content caches for 1 minute
-		staticApp.use(ServeStatic('public', {maxAge: 60000}));
+		publicStaticApp.use(ServeStatic('public', {maxAge: Config.cache}));
+		assetsStaticApp.use(ServeStatic('data/assets', {maxAge: Config.cache}));
 
 		app.use(BodyParser.json());
 		app.use(BodyParser.urlencoded({
@@ -128,27 +138,30 @@ function Server(){
 			}
 		}));
 
-		// app.use(function(req, res, next){
-		// 	if(req.query.build==="") // Security risk -- fix it later with a proper key
-		// 	{
-		// 		var templateEngine = ChildProcess.spawn("node", ["Tree"]);
+		app.use(function(req, res, next){
+			if(Config.mode==="dev" && req.query.build!==undefined){
+				var templateEngine = ChildProcess.spawn("node", 
+										["Tree", Url.parse(req.url).pathname]);
 
-		// 		templateEngine.stdout.on('data', function(data){
-		// 			console.log(data.toString());
-		// 		});
+				templateEngine.stdout.on('data', function(data){
+					console.log(data.toString());
+				});
 
-		// 		templateEngine.stderr.on('data', function (data){
-		// 		  	console.log(data.toString());
-		// 		});
+				templateEngine.stderr.on('data', function (data){
+				  	console.log(data.toString());
+				});
 
-		// 		templateEngine.on('close', function(code){
-		// 			console.log("Tree template engine exited with code " + code);
-		// 		});
-		// 	}
-		// 	next();
-		// });
+				templateEngine.on('close', function(code){
+					console.log("Tree template engine exited with code " + code);
+					next();
+				});
+			}
+			else
+				next();	
+		});
 
-		app.use(Vhost('marooncanvas.local', staticApp));
+		app.use(Vhost(Config.appVhost, publicStaticApp));
+		app.use("/assets", assetsStaticApp);
 
 		app.use(function(req, res, next){
 		  	res.status(404).send("Sorry can't find that!");

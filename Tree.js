@@ -23,14 +23,15 @@ function Tree () {
 		$ = jQuery(window);
 
 	init();
-	detectChanges(contentsDir);
 
 	function init(){
-		// This must be replaced with a smarter way of cleaning old files
-		var oldContents = FS.readdirSync(publicDir);
-		oldContents.forEach(function(oldContent){
-			FS.removeSync(Path.join(publicDir, oldContent));
-		});
+		var file = process.argv[2];
+		if(file!==undefined)
+			updateFile(Path.join(contentsDir, file));
+		else{
+			removeAll();
+			detectChanges(contentsDir);
+		}
 	}
 
 	function read(path){
@@ -41,6 +42,29 @@ function Tree () {
 		var writePath = publicDir + readPath.replace(contentsDir, "");
 		FS.mkdirsSync(Path.dirname(writePath));
 		FS.writeFileSync(writePath, content, { encoding: "utf-8" });
+	}
+
+	function updateFile(path){
+		try{
+			var stats = FS.statSync(path);
+			if(stats.isDirectory())
+				updateFile(Path.join(path,"index.html"));
+			else if(stats.isFile() &&
+					Path.extname(path) === ".html"){
+				grabContent(path);
+			}
+		}
+		catch(err){
+			console.error(err.stack);
+		}
+	}
+
+	function removeAll(){
+		// This must be replaced with a smarter way of cleaning old files
+		var oldContents = FS.readdirSync(publicDir);
+		oldContents.forEach(function(oldContent){
+			FS.removeSync(Path.join(publicDir, oldContent));
+		});
 	}
 
 	function detectChanges(dir){

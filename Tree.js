@@ -83,9 +83,9 @@ function Tree () {
 
 	function grabContent(path){
 		var $content = $( read(path) );
-		$("div.content-wrapper").html( $content.html() );
+		$("div.body div.container").html( $content.html() );
 		write(path, Beautify.html( serializeDocument(document) ));
-		$("div.content-wrapper").html("");
+		$("div.body div.container").html("");
 	}
 }
 

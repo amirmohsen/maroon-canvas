@@ -28,11 +28,25 @@
 						</ul>
 						<script>
 							$("div.menu > ul > li").each(function () {
-								var subItemArrowHead = '<a class="sub-items" href="#">&#9660;</a>',
-									$menuItem = $(this);
+								var $subItemsArrow = $('<a class="sub-items" href="#">&#9660;</a>'),
+									$label = $('<div class="label">'),
+									$menuItem = $(this),
+									$subItems = $menuItem.find("ul");
 
-								if($menuItem.find("ul").length>0)
-									$menuItem.find("a").after(subItemArrowHead);
+								if($subItems.length>0){
+									$label.html($menuItem.children("a").add($subItemsArrow));
+									$menuItem.prepend($label);
+								}
+							});
+
+							$(document).click(function(event){
+								event.stopPropagation();
+								var $clickedEl = $(event.target);
+								if($clickedEl.is("a.sub-items")){
+									$clickedEl.parent().siblings("ul").addClass("visible");
+								}
+								else
+									$("div.menu > ul > li > ul.visible").removeClass("visible");
 							});
 						</script>
 					</div>

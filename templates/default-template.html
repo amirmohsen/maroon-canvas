@@ -31,59 +31,6 @@
 								<li><a href="/about/">About</a></li>
 								<li><a href="/contact/">Contact</a></li>
 							</ul>
-							<script>
-								var arrowHead = {
-									up: "&#9650;",
-									down: "&#9660;"
-								}
-
-								$("div.menu > ul > li").each(function () {
-									var $subItemsArrow = $('<a class="sub-items" href="#">&#9660;</a>'),
-										$label = $('<div class="label">'),
-										$menuItem = $(this),
-										$subItems = $menuItem.find("ul");
-
-									if($subItems.length>0){
-										$label.html($menuItem.children("a").add($subItemsArrow));
-										$menuItem.prepend($label);
-									}
-								});
-
-								$(document).click(function(event){
-									event.stopPropagation();
-									var $clickedEl = $(event.target),
-										skip = false;
-									
-									$("div.menu > ul > li > ul").each(function(index, element){
-										var $element = $(element);
-										if($element.hasClass("visible")){
-											var $subItemsArrow = $element.siblings("div.label").children("a.sub-items");
-											if($subItemsArrow.length>0 &&
-												$subItemsArrow.is($clickedEl))
-												skip = true;
-
-											$subItemsArrow.html(arrowHead.down);
-											$element.removeClass("visible");
-										}
-									});
-
-									if(skip)
-										return;
-
-									if($clickedEl.is("a.sub-items")){
-										$clickedEl.parent().siblings("ul").addClass("visible");
-										$clickedEl.html(arrowHead.up);
-									}
-								});
-
-								$("div.menu").click(function(event){
-									var $menuPopUp = $("div.menu > ul");
-									if($menuPopUp.hasClass("visible"))
-										$menuPopUp.removeClass("visible");
-									else if($menuPopUp.css("display")==="none")
-										$menuPopUp.addClass("visible");
-								});
-							</script>
 						</div>
 					</div>
 				</div>
@@ -95,19 +42,78 @@
 		<div class="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-xs-7 col-sm-9">
+					<div class="col-xs-7 col-sm-8 col-md-9">
 						<p class="copyright-notice">&#64; Amir Mohsen Abdolrazaghi, 2015.</p>
 					</div>
-					<div class="col-xs-5 col-sm-3">
-						<img class="general-social-media" src="/assets/images/social-media.png">
+					<div class="col-xs-5 col-sm-4 col-md-3">
+						<img class="general-social-media" src="/assets/images/social-media/social-media.png">
 						<div class="social-media">
-							<a href="http://blog.marooncanvas.com/" target="_blank"><img src="/assets/images/blogger.png"></a>
-							<a href="http://uk.linkedin.com/in/amirmohsen" target="_blank"><img src="/assets/images/linkedin.png"></a>
-							<a href="https://twitter.com/amirmohsena/" target="_blank"><img src="/assets/images/twitter.png"></a>
-						</div>
+							<a href="http://blog.marooncanvas.com/" target="_blank"><img src="/assets/images/social-media/blogger.png"></a>
+							<a href="https://github.com/amirmohsen" target="_blank"><img src="/assets/images/social-media/github.png"></a>
+							<a href="http://uk.linkedin.com/in/amirmohsen" target="_blank"><img src="/assets/images/social-media/linkedin.png"></a>
+							<a href="https://twitter.com/amirmohsena/" target="_blank"><img src="/assets/images/social-media/twitter.png"></a>
+						</div>						
 					</div>
 				</div>
 			</div>
 		</div>
+		<script>
+			var arrowHead = {
+				up: "&#9650;",
+				down: "&#9660;"
+			}
+
+			$("div.menu > ul > li").each(function () {
+				var $subItemsArrow = $('<a class="sub-items" href="#">&#9660;</a>'),
+					$label = $('<div class="label">'),
+					$menuItem = $(this),
+					$subItems = $menuItem.find("ul");
+
+				if($subItems.length>0){
+					$label.html($menuItem.children("a").add($subItemsArrow));
+					$menuItem.prepend($label);
+				}
+			});
+
+			$(document).click(function(event){
+				event.stopPropagation();
+				var $clickedEl = $(event.target),
+					subMenu = true;
+				
+				$("div.menu > ul > li > ul").each(function(index, element){
+					var $element = $(element);
+					if($element.hasClass("visible")){
+						var $subItemsArrow = $element.siblings("div.label").children("a.sub-items");
+						if($subItemsArrow.length>0 &&
+							$subItemsArrow.is($clickedEl))
+							subMenu = false;
+
+						$subItemsArrow.html(arrowHead.down);
+						$element.removeClass("visible");
+					}
+				});
+
+				if(subMenu && $clickedEl.is("a.sub-items")){
+					$clickedEl.parent().siblings("ul").addClass("visible");
+					$clickedEl.html(arrowHead.up);
+				}
+			});
+
+			$("div.menu").click(function(event){
+				var $menuPopUp = $("div.menu > ul");
+				if($menuPopUp.hasClass("visible"))
+					$menuPopUp.removeClass("visible");
+				else if($menuPopUp.css("display")==="none")
+					$menuPopUp.addClass("visible");
+			});
+
+			$("img.general-social-media").click(function(event){
+				var $socialMedia = $("div.social-media");
+				if($socialMedia.hasClass("visible"))
+					$socialMedia.removeClass("visible");
+				else
+					$socialMedia.addClass("visible");
+			});
+		</script>
 	</body>
 </html>

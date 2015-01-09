@@ -163,6 +163,27 @@ function Server(){
 		app.use(Vhost(Config.appVhost, publicStaticApp));
 		app.use("/assets", assetsStaticApp);
 
+		app.use("/_api", function(req, res, next){
+			var type = req.url.split("/")[1];
+
+			if(type==="blog"){
+				var feedURL = req.url.replace("/blog","");
+				Http.get("http://blog.marooncanvas.com" + feedURL, function (http_res) {
+				    var data = "";
+
+				    http_res.on("data", function (chunk) {
+				        data += chunk;
+				    });
+
+				    http_res.on("end", function () {
+				        res.status(200).send(data);
+				    });
+				});
+			}
+			else
+				res.status(404).send("API doesn't exist");
+		});
+
 		app.use(function(req, res, next){
 		  	res.status(404).send("Sorry can't find that!");
 		});

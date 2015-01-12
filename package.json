@@ -17,6 +17,7 @@
     "multer": "0.1.6",
     "fs-extra": "0.13.0",
     "js-beautify": "1.5.4",
-    "compression": "1.2.2"
+    "compression": "1.2.2",
+    "less-middleware": "1.0.4"
   }
 }

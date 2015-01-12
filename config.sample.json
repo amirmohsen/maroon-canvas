@@ -1,0 +1,13 @@
+{
+	"mode": "dev",
+	"cache": 0,
+	"port": 8080,
+	"appVhost": "marooncanvas.local"
+}
+
+{
+	"mode": "live",
+	"cache": 60000,
+	"port": 8080,
+	"appVhost": "marooncanvas.com"
+}

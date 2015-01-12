@@ -1,0 +1,106 @@
+div.body {
+
+	// Overriding default owl carousel css
+	div.owl-theme div.owl-controls div.owl-page span {
+		background-color: @golden;
+	}
+	
+	div#projects-spotlight div.item {
+			
+		& > * {
+			display: block;
+			margin: 0 auto;
+		}
+
+		h3,
+		p.caption {
+			padding: 3px 5px;
+		}
+		
+		img {
+			max-width: 100%;
+			border: 0 solid @golden;
+			border-top-width: 3px;
+			border-bottom-width: 3px;
+		}	
+	}
+
+	div#blog-summary {
+
+		div.post {
+			padding-bottom: 20px;
+
+			h4 {
+				text-align: center;
+				border-bottom: 2px solid;
+				white-space: nowrap;
+				.transition(background-color 0.5s linear);				
+
+				a {
+					display: block;
+					width: 100%;
+					height: 100%;
+					padding: 5px;
+					color: @golden;
+					.transition(color 0.5s linear);
+
+					.reset-text-decoration();
+				}
+
+				&:hover {
+					background-color: @golden;
+
+					a {
+						color: @maroon;
+					}
+				}
+			}
+		}
+	}
+
+	div.project-overview {
+
+		div.project {
+			position: relative;
+			height: 300px;
+			text-align: center;
+			margin-bottom: 30px;
+
+			a {
+				display: block;
+				width: 100%;
+				height: 100%;
+				.reset-text-decoration();
+			}
+
+			h3 {
+				display: table;
+				width: 100%;
+				height: 180px;
+				margin: 0;
+				background-color: fade(@lightRed, 50%);
+
+				span {
+					display: table-cell;
+					vertical-align: bottom;
+				}
+			}
+
+			div.active-area {
+				display: table;
+
+				div.filler {
+					display: table-cell;
+					width: 100%;
+					background-color: fade(@lightRed, 50%);
+				}
+
+				canvas.page-flipper {
+					display: table-cell;
+					width: 120px;
+					height: 120px;
+				}
+			}
+		}
+	}
+}

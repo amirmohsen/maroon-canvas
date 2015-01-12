@@ -46,8 +46,7 @@ function Server(){
 		app = Express();
 		httpServer = Http.Server(app);
 		// global.io = SocketIo(httpServer);
-		publicStaticApp = Express();
-		assetsStaticApp = Express();
+		staticApp = Express();
 		// Mongoose.connect('mongodb://localhost/vision-clay');
 		// db = Mongoose.connection;
 		// db.on('error', console.error.bind(console, 'connection error:'));
@@ -87,7 +86,8 @@ function Server(){
 				"https",
 				"multer",
 				"child_process",
-				"compression"
+				"compression",
+				"less-middleware"
 			]
 		});
 		global.$ = Jquery(Jsdom.jsdom().parentWindow);
@@ -95,11 +95,11 @@ function Server(){
 		// global.Model = function(name, schema){
 		// 	return Mongoose.model(name, schema);
 		// };
-		importer({
-			dirs: [
-				__ROOT + "/app"
-			],
-		});
+		// importer({
+		// 	dirs: [
+		// 		__ROOT + "/app"
+		// 	]
+		// });
 	}
 
 	function loadConfig(){
@@ -116,10 +116,22 @@ function Server(){
 		// Compress all responses above 1KB (default value)
 		app.use(Compression());
 
-		// Static content caches for 1 minute
-		publicStaticApp.use(ServeStatic('public', {maxAge: Config.cache}));
-		assetsStaticApp.use(ServeStatic('data/assets', {maxAge: Config.cache}));
+		// Less compilation
+		app.use(
+			LessMiddleware( 
+				Path.join(__ROOT, "app"), 
+				{
+					dest: Path.join(__ROOT, "public")
+				}
+			)
+		);
 
+		var staticOpts = {maxAge: Config.cache};
+
+		staticApp.use("/",ServeStatic('public/pages', staticOpts));
+		staticApp.use("/assets/",ServeStatic('public/assets', staticOpts));
+		staticApp.use("/app/assets/",ServeStatic('app/assets', staticOpts));
+		
 		app.use(BodyParser.json());
 		app.use(BodyParser.urlencoded({
 	  		extended: true
@@ -141,7 +153,8 @@ function Server(){
 		app.use(function(req, res, next){
 			if(Config.mode==="dev" && req.query.build!==undefined){
 				var templateEngine = ChildProcess.spawn("node", 
-										["Tree", Url.parse(req.url).pathname]);
+										["app/engine/PageGen.js", 
+										Url.parse(req.url).pathname]);
 
 				templateEngine.stdout.on('data', function(data){
 					console.log(data.toString());
@@ -160,8 +173,7 @@ function Server(){
 				next();	
 		});
 
-		app.use(Vhost(Config.appVhost, publicStaticApp));
-		app.use("/assets", assetsStaticApp);
+		app.use(Vhost(Config.appVhost, staticApp));
 
 		app.use("/_api", function(req, res, next){
 			var type = req.url.split("/")[1];
@@ -211,5 +223,20 @@ try {
 	server.start();
 }
 catch(error){
-	console.log(error);
+	dumpError(error);
+}
+
+function dumpError(err) {
+	if (typeof err === 'object') {
+		if (err.message) {
+			console.error('\nMessage: ' + err.message)
+		}
+		if (err.stack) {
+			console.error('\nStacktrace:')
+			console.error('====================')
+			console.error(err.stack);
+		}
+	} else {
+		console.error('dumpError :: argument is not an object');
+	}
 }

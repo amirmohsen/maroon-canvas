@@ -3,14 +3,15 @@ var FS = require("fs-extra"),
 	jQuery = require("jquery"),
 	jsDom = require("jsdom").jsdom,
 	serializeDocument = require("jsdom").serializeDocument,
-	Beautify = require('js-beautify');
+	Beautify = require('js-beautify'),
+	__ROOT = __dirname + "/../..";
 
-function Tree () {
+function PageGen () {
 	
 	var self = this,
-		publicDir = Path.join(__dirname, "/public"),
-		contentsDir = Path.join(__dirname, "/data/contents"),
-		templatesDir = Path.join(__dirname, "/templates"),
+		publicDir = Path.join(__ROOT, "/public/pages"),
+		contentsDir = Path.join(__ROOT, "/data"),
+		templatesDir = Path.join(__ROOT, "/app/views"),
 		document = jsDom( 
 			read(templatesDir + "/default-template.html"),
 			{
@@ -89,4 +90,4 @@ function Tree () {
 	}
 }
 
-new Tree();
+new PageGen();

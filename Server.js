@@ -129,7 +129,8 @@ function Server(){
 		var staticOpts = {maxAge: Config.cache};
 
 		staticApp.use("/",ServeStatic('public/pages', staticOpts));
-		staticApp.use("/assets/",ServeStatic('public/assets', staticOpts));
+		staticApp.use("/assets/styles/",ServeStatic('public/assets/styles', staticOpts));
+		staticApp.use("/assets/",ServeStatic('data/assets', staticOpts));
 		staticApp.use("/app/assets/",ServeStatic('app/assets', staticOpts));
 		
 		app.use(BodyParser.json());

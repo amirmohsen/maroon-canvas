@@ -10,7 +10,7 @@ function PageGen () {
 	
 	var self = this,
 		publicDir = Path.join(__ROOT, "/public/pages"),
-		contentsDir = Path.join(__ROOT, "/data"),
+		contentsDir = Path.join(__ROOT, "/data/pages"),
 		templatesDir = Path.join(__ROOT, "/app/views"),
 		document = jsDom( 
 			read(templatesDir + "/default-template.html"),

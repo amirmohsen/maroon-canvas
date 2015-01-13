@@ -8,7 +8,7 @@ function BlogSummary () {
 	function init(){
 		$.ajax({
 			type: "GET",
-			url: "http://marooncanvas.local:8080/_api/blog/feeds/posts/default?alt=json",
+			url: "/_api/blog/feeds/posts/default?alt=json",
 			dataType: "JSON",
 			success: readPosts
 		});
@@ -16,7 +16,6 @@ function BlogSummary () {
 
 	function readPosts(feed){
 		var entries = feed.feed.entry;
-		console.log(entries);
 		for(var i=0; i<3; i++){
 			posts[i] = {};
 			posts[i].title = entries[i].title.$t;

@@ -5,3 +5,4 @@ data/
 cache/
 temp/
 config.json
+ssl_cert

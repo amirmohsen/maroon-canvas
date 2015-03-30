@@ -1,0 +1,1 @@
+require("./core/server/Main.js")(__dirname);

@@ -9,6 +9,6 @@ module.exports = {
 		"key": "ssl_cert/marooncanvas.local.key",
 		"cert": "ssl_cert/marooncanvas.local.crt"
 	},
-	"proxy": false,
-	"Router": require("./Router");
+	"proxy": true,
+	"Router": require("./Router")
 };

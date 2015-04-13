@@ -1,23 +1,7 @@
 {
   "name": "maroon-canvas",
   "description": "My personal website",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "express": "4.9.5",
-    "vhost": "3.0.0",
-    "serve-static": "1.6.3",
-    "body-parser": "1.9.0",
-    "mongoose": "3.8.17",
-    "jquery": "2.1.1",
-    "jsdom": "1.0.1",
-    "node-uuid": "1.4.1",
-    "change-case": "2.1.5",
-    "socket.io": "1.1.0",
-    "multer": "0.1.6",
-    "fs-extra": "0.13.0",
-    "js-beautify": "1.5.4",
-    "compression": "1.2.2",
-    "less-middleware": "1.0.4"
-  }
+  "dependencies": {}
 }

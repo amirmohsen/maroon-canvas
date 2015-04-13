@@ -1,1 +1,1 @@
-require("./core/server/Main.js")(__dirname);
+require("./core")(__dirname);

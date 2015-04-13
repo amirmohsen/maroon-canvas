@@ -3,7 +3,7 @@ module.exports = {
 	"components": [
 		{
 			name: "Server",
-			config: require("./Server"),
+			config: require("./Server")
 		},
 		{
 			name: "API",
@@ -11,11 +11,11 @@ module.exports = {
 		},
 		{
 			name: "LessHandler",
-			config: {}
+			config: require("./LessHandler")
 		},
 		{
 			name: "TemplateEngine",
-			config: {}
+			config: require("./TemplateEngine")
 		}
 	]
 };

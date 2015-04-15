@@ -1,9 +1,9 @@
 module.exports = {
 	staticRoutes: {
-		"/": "public",
-		"/styles": "app/views/styles",
-		"/scripts": "assets/scripts",
-		"/fonts": "assets/fonts"
+		"/": "/public/pages",
+		"/styles": [ "/public/styles", "/app/styles" ],
+		"/assets": "/data/assets",
+		"/app/assets": "/app/assets"
 	},
 	errors: {
 		"e404": "not-found.html",

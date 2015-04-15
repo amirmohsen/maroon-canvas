@@ -10,5 +10,6 @@ module.exports = {
 		"cert": "ssl_cert/marooncanvas.local.crt"
 	},
 	"proxy": true,
+	"env": "development",
 	"Router": require("./Router")
 };

@@ -1,4 +1,4 @@
 module.exports = {
-	src: "app/views",
+	src: "app",
 	dest: "public"
 }

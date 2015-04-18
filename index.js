@@ -1,37 +1,21 @@
-var Seed = require("Seed"),
-	configFile = require("/config"),
-	core, api, lessHandler, server, templateEngine;
+try {
+	require("seed");
 
-this.config.seed.components.server.Router = {
-	staticRoutes: {
-		"/": "/public/pages",
-		"/styles": [ "/public/styles", "/app/styles" ],
-		"/assets": "/data/assets",
-		"/app/assets": "/app/assets"
-	},
-	errors: {
-		"e404": "not-found.html",
-		"e500": "server-error.html"
-	}
-};
+	var config = require("./config"),
+		core, api, lessHandler, server, templateEngine;
 
-core = new Seed({
-	appRoot: __dirname
-});
+	var core = new Seed({ appRoot: __dirname });
 
-server = new Seed.Server(this.config.seed.components.server);
+	server = new Seed.Server(config.seed.components.Server);
 
-api = new Seed.API();
+	api = new Seed.API();
 
-lessHandler = new Seed.LessHandler({
-	src: "app",
-	dest: "public"
-});
+	lessHandler = new Seed.LessHandler(config.seed.components.LessHandler);
 
-templateEngine = new Seed.TemplateEngine({
-	layouts: "/app/views/layouts",
-	mixins: "/app/views/mixins",
-	data: "/data/pages"
-});
+	templateEngine = new Seed.TemplateEngine(config.seed.components.TemplateEngine);
 
-core.run();
+	core.run();
+}
+catch(e) {
+	dumpError(e);
+}
